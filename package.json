@@ -10,6 +10,7 @@
     "build": "npm run build:sass && npm run build:node-sass",
     "build:sass": "sass index.scss dist/sass/index.css",
     "build:node-sass": "node-sass index.scss dist/node-sass/index.css",
+    "build:settings": "node node_modules/@henris/build/scripts/json-to-css.js",
     "prepublishOnly": "npm run test && npm run build"
   },
   "repository": {
@@ -19,7 +20,7 @@
   "keywords": [
     "Sass",
     "Toolbelt",
-    "Color",
+    "Grid",
     "Henri's"
   ],
   "author": "Sil van Diepen",
@@ -29,8 +30,11 @@
   },
   "homepage": "https://github.com/henris-style/grid#readme",
   "devDependencies": {
+    "@henris/build": "0.0.2",
+    "@henris/output": "0.0.3",
+    "@henris/utils": "0.0.3",
     "node-sass": "^4.11.0",
     "sass": "^1.17.0",
-    "sass-true": "^4.0.0"
+    "ssst": "0.0.4"
   }
 }

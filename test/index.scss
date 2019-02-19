@@ -1,2 +1,16 @@
-@import "../node_modules/sass-true/sass/true";
-@debug 'Tests yet to be made';
+// Import Utils
+@import '../index.scss';
+
+// Import Ssst test suite
+@import '../node_modules/ssst/index.scss';
+
+@include test(
+	'grid() function',
+	'Return a function viewport width'
+) {
+	@include is-equal(
+		grid(1),
+		'4.1666666667vw',
+		'4.16667vw'
+	);
+}
