@@ -42,5 +42,8 @@
     "stylelint": "^9.10.1",
     "stylelint-logical-order": "0.0.4",
     "stylelint-order": "^2.0.0"
+  },
+  "dependencies": {
+    "@henris/default": "0.0.1"
   }
 }
