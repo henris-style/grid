@@ -35,7 +35,7 @@
   "devDependencies": {
     "@henris/build": "^0.0.3",
     "@henris/output": "^0.0.6",
-    "@henris/utils": "^0.0.5",
+    "@henris/utils": "^0.0.14",
     "node-sass": "^4.11.0",
     "sass": "^1.17.1",
     "ssst": "0.0.4",
