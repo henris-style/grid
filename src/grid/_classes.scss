@@ -38,7 +38,6 @@
 			}
 		}
 		@each $grid-name, $grid-value in $grid-breakpoints {
-			// @debug $grid-name;
 			&.#{$base-prefix-grid}#{$grid-name}-reverse {
 				$mq: media-query(#{$grid-name}-up);
 				@media #{$mq} {

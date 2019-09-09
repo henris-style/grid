@@ -86,7 +86,6 @@
 
 @function grid-clean-width($width){
 	@if unit($width) == 'px'{
-		@debug strip-unit($width);
 		$width: strip-unit($width);
 	} @else if unit($width) == 'rem'{
 		$width: strip-unit($width) * $base-font-size;

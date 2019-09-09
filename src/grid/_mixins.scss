@@ -5,7 +5,6 @@
 //  @include min-(width,4,240,'calc(100% - 240px)');
 
 @mixin min-($args...) {
-	@debug $args;
 	@include min-max($args, 'min');
 }
 
