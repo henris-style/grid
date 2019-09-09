@@ -10,10 +10,10 @@
 }
 
 // Default use:
-//  @include min-(width,4,240);
+//  @include max-(width,4,480);
 
 //  use width calculation
-//  @include min-(width,4,240,'calc(100% - 240px)');
+//  @include max-(width,4,480,'calc(100% - 480px)');
 //
 
 @mixin max-($args...) {
