@@ -57,3 +57,5 @@ $base-prefix-grid: '' !default;
 		'4.16667vw'
 	);
 }
+
+@include min-(font-size,1,32);

@@ -5,9 +5,9 @@
 //  @include min-(width,4,240,'calc(100% - 240px)');
 
 @mixin min-($args...) {
-	@include min-max($args,'min');
+	@debug $args;
+	@include min-max($args, 'min');
 }
-
 
 // Default use:
 //  @include min-(width,4,240);
@@ -17,48 +17,57 @@
 //
 
 @mixin max-($args...) {
-	@include min-max($args,'max');
+	@include min-max($args, 'max');
 }
 
 //
 // Logic for the min and max functions
 //
 
-@mixin min-max($args, $minmax){
+@mixin min-max($args, $minmax) {
 	$property: null;
 	$columns: null;
 	$width: null;
 	$mq: null;
-	
-	@if type-of(nth($args,1)) == 'string'{
-		$property: nth($args,1);
-		$columns: nth($args,2);
-		$width: nth($args,3);
-		$alt: nth($args,4);
-	} @else{
-		$columns: nth($args,1);
-		$width: nth($args,2);
-		$alt: nth($args,3);
+	$alt: false;
+	@if type-of(nth($args, 1)) == 'string' {
+		@if length($args) < 3 {
+			@debug '[(optional) selector, $columns, $width (unitless/px/rem)]';
+		}
+		$property: nth($args, 1);
+		$columns: nth($args, 2);
+		$width: nth($args, 3);
+		@if length($args) > 3 {
+			$alt: nth($args, 4);
+		}
+	} @else {
+		@if length($args) < 2 {
+			@debug '[(optional) selector, $columns, $width (unitless/px/rem)]';
+		}
+		$columns: nth($args, 1);
+		$width: nth($args, 2);
+		@if length($args) > 2 {
+			$alt: nth($args, 3);
+		}
 	}
-	
-	@if $minmax == 'max'{
+
+	@if $minmax == 'max' {
 		$mq: grid-mq-max($columns, $width);
-	}
-	@if $minmax == 'min'{
+	} @else if $minmax == 'min' {
 		$mq: grid-mq-min($columns, $width);
 	}
+
 	@media #{$mq} {
 		@if $property != null {
 			@if $alt != false {
 				#{$property}: $alt;
 			} @else {
-				#{$property}: #{strip-unit($width)}px;
+				#{$property}: #{$width}px;
 			}
 		}
 		@content;
 	}
 }
-
 
 //
 // A mixin to create all the classes for columns
@@ -77,7 +86,7 @@
 	//
 	// Create the default classes for widths without any media query
 	//
-	@if output("grid-no-mq-classes") {
+	@if output('grid-no-mq-classes') {
 		@for $a from 0 through $grid-columns {
 			$percentage: percentage($a/$grid-columns); //
 			$column: #{$a}#{$childClass};
@@ -177,7 +186,7 @@
 				}
 			}
 		}
-		@if output("grid-mq-#{$bp-name}") {
+		@if output('grid-mq-#{$bp-name}') {
 			@media #{$mq} {
 				//
 				// Sometimes you need a zero, which does the same as a hide for a breakpoint.
