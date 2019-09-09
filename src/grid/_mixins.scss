@@ -4,19 +4,10 @@
 //  use width calculation
 //  @include min-(width,4,240,'calc(100% - 240px)');
 
-@mixin min-($property: null, $columns: 1, $min-width: 100, $alt: false) {
-	$mq: grid-mq-min($columns, $min-width);
-	@media #{$mq} {
-		@if $property != null {
-			@if $alt != false {
-				#{$property}: $alt;
-			} @else {
-				#{$property}: #{strip-unit($min-width)}px;
-			}
-		}
-		@content;
-	}
+@mixin min-($args...) {
+	@include min-max($args,'min');
 }
+
 
 // Default use:
 //  @include min-(width,4,240);
@@ -25,19 +16,49 @@
 //  @include min-(width,4,240,'calc(100% - 240px)');
 //
 
-@mixin max-($property: null, $columns: 1, $max-width: 200, $alt: false) {
-	$mq: grid-mq-max($columns, $max-width);
+@mixin max-($args...) {
+	@include min-max($args,'max');
+}
+
+//
+// Logic for the min and max functions
+//
+
+@mixin min-max($args, $minmax){
+	$property: null;
+	$columns: null;
+	$width: null;
+	$mq: null;
+	
+	@if type-of(nth($args,1)) == 'string'{
+		$property: nth($args,1);
+		$columns: nth($args,2);
+		$width: nth($args,3);
+		$alt: nth($args,4);
+	} @else{
+		$columns: nth($args,1);
+		$width: nth($args,2);
+		$alt: nth($args,3);
+	}
+	
+	@if $minmax == 'max'{
+		$mq: grid-mq-max($columns, $width);
+	}
+	@if $minmax == 'min'{
+		$mq: grid-mq-min($columns, $width);
+	}
 	@media #{$mq} {
 		@if $property != null {
 			@if $alt != false {
 				#{$property}: $alt;
 			} @else {
-				#{$property}: #{strip-unit($max-width)}px;
+				#{$property}: #{strip-unit($width)}px;
 			}
 		}
 		@content;
 	}
 }
+
 
 //
 // A mixin to create all the classes for columns

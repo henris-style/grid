@@ -67,16 +67,37 @@
 
 //
 // Return a media query with min and max values
-// -*/
+// 
 
 @function mq($min: 0, $max: 0) {
-	@if $max > 0 {
-		$mq: "only screen and (min-width: #{strip-unit($min)}px) and (max-width: #{strip-unit($max)}px)";
-		@return $mq;
+	@if $min ==  null and $max > 0 {
+		@return "only screen and (max-width: #{strip-unit($max)}px)";
+	} @else if $max > 0 {
+		@return "only screen and (min-width: #{strip-unit($min)}px) and (max-width: #{strip-unit($max)}px)";
 	} @else if $min > 0 {
-		$mq: "only screen and (min-width: #{strip-unit($min)}px)";
-		@return $mq;
+		@return "only screen and (min-width: #{strip-unit($min)}px)";
 	}
+}
+
+//
+// Cleanup units for calculation,
+// convert Rem to pixels and make them unitless.
+//
+
+@function grid-clean-width($width){
+	@if unit($width) == 'px'{
+		@debug strip-unit($width);
+		$width: strip-unit($width);
+	} @else if unit($width) == 'rem'{
+		$width: strip-unit($width) * $base-font-size;
+	}
+	@return $width;
+}
+@function grid-clean-columns($columns){
+	@if unit($columns) == "rem" {
+		@error "please just use Grid units!"; //
+	}	
+	@return $columns;
 }
 
 //
@@ -85,15 +106,10 @@
 //
 
 @function grid-mq-min($columns, $width) {
-	@if unit($columns) == "rem" {
-		@debug "please just use Grid units!"; //
-		$one-column: $grid-design-width / $grid-columns; //
-		$width: strip-unit((strip-unit($columns) * 16) / $one-column);
-	}
+	$columns: grid-clean-columns($columns);
+	$width: grid-clean-width($width);
 
-	$minimum-screenwidth: ($width/ $columns) * $grid-columns;
-	$result: "only screen and (max-width: #{strip-unit($minimum-screenwidth)}px)";
-	@return $result;
+	@return mq(null,($width/ $columns) * $grid-columns);
 }
 
 //
@@ -102,13 +118,8 @@
 //
 
 @function grid-mq-max($columns, $width) {
-	@if unit($columns) == "rem" {
-		@debug "please just use Grid units!"; //
-		$one-column: $grid-design-width / $grid-columns; //
-		$width: strip-unit((strip-unit($columns) * 16) / $one-column);
-	}
+	$columns: grid-clean-columns($columns);
+	$width: grid-clean-width($width);
 
-	$minimum-screenwidth: ($width/ $columns) * $grid-columns;
-	$result: "only screen and (min-width: #{strip-unit($minimum-screenwidth)}px)";
-	@return $result;
+	@return mq(($width/ $columns) * $grid-columns);
 }
