@@ -4,7 +4,7 @@
   "description": "Grid module for Henri's",
   "main": "index.scss",
   "scripts": {
-    "test": "npm run test:sass && npm run test:node-sass",
+    "test": "npm run test:node-sass",
     "test:sass": "sass test/index.scss dist/test/sass/index.css",
     "test:node-sass": "node-sass test/index.scss dist/test/node-sass/index.css",
     "build": "npm run build:sass && npm run build:node-sass",
