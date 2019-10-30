@@ -5,7 +5,9 @@
 //  @include min-(width,4,240,'calc(100% - 240px)');
 
 @mixin min-($args...) {
-	@include min-max($args, "min");
+	@include min-max($args, "min") {
+		@content;
+	}
 }
 
 // Default use:
@@ -16,7 +18,9 @@
 //
 
 @mixin max-($args...) {
-	@include min-max($args, "max");
+	@include min-max($args, "max") {
+		@content;
+	}
 }
 
 //
