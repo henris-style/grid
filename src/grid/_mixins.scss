@@ -5,7 +5,7 @@
 //  @include min-(width,4,240,'calc(100% - 240px)');
 
 @mixin min-($args...) {
-	@include min-max($args, 'min');
+	@include min-max($args, "min");
 }
 
 // Default use:
@@ -16,7 +16,7 @@
 //
 
 @mixin max-($args...) {
-	@include min-max($args, 'max');
+	@include min-max($args, "max");
 }
 
 //
@@ -29,9 +29,9 @@
 	$width: null;
 	$mq: null;
 	$alt: false;
-	@if type-of(nth($args, 1)) == 'string' {
+	@if type-of(nth($args, 1)) == "string" {
 		@if length($args) < 3 {
-			@debug '[(optional) selector, $columns, $width (unitless/px/rem)]';
+			@debug "[(optional) selector, $columns, $width (unitless/px/rem)]";
 		}
 		$property: nth($args, 1);
 		$columns: nth($args, 2);
@@ -41,7 +41,7 @@
 		}
 	} @else {
 		@if length($args) < 2 {
-			@debug '[(optional) selector, $columns, $width (unitless/px/rem)]';
+			@debug "[(optional) selector, $columns, $width (unitless/px/rem)]";
 		}
 		$columns: nth($args, 1);
 		$width: nth($args, 2);
@@ -50,9 +50,9 @@
 		}
 	}
 
-	@if $minmax == 'max' {
+	@if $minmax == "max" {
 		$mq: grid-mq-max($columns, $width);
-	} @else if $minmax == 'min' {
+	} @else if $minmax == "min" {
 		$mq: grid-mq-min($columns, $width);
 	}
 
@@ -61,7 +61,7 @@
 			@if $alt != false {
 				#{$property}: $alt;
 			} @else {
-				#{$property}: #{$width}px;
+				#{$property}: #{strip-unit(to-px($width))}px;
 			}
 		}
 		@content;
@@ -78,14 +78,14 @@
 	// mixins doesnt create child classes. But when true, the columns will
 	// be made in the classes.
 	//
-	$childClass: '';
+	$childClass: "";
 	@if $child == true {
-		$childClass: '> .#{$base-prefix-grid}column';
+		$childClass: "> .#{$base-prefix-grid}column";
 	}
 	//
 	// Create the default classes for widths without any media query
 	//
-	@if output('grid-no-mq-classes') {
+	@if output("grid-no-mq-classes") {
 		@for $a from 0 through $grid-columns {
 			$percentage: percentage($a/$grid-columns); //
 			$column: #{$a}#{$childClass};
@@ -123,15 +123,15 @@
 
 	$min-width: 0;
 	@each $bp-name, $bp-value in $grid-breakpoints {
-		$mq-only: '#{$grid-screen} and (min-width: #{$min-width}px) and (max-width: #{$bp-value}px)';
-		$mq: '#{$grid-screen} and (min-width: #{$min-width}px)';
+		$mq-only: "#{$grid-screen} and (min-width: #{$min-width}px) and (max-width: #{$bp-value}px)";
+		$mq: "#{$grid-screen} and (min-width: #{$min-width}px)";
 		$min-width: $bp-value + 1;
 		//
 		// The partials make it easier to use in the system. Create a
 		// class small-half and always create a column which is half the
 		// size of its parent. Also when you alter the amount of columns
 		//
-		@if output('grid-parts') {
+		@if output("grid-parts") {
 			@each $part, $percentage in $grid-parts {
 				&%#{$part}#{$childClass},
 				&.#{$base-prefix-grid}#{$part}#{$childClass} {
@@ -149,7 +149,7 @@
 		// Grid only classes make it possible to create a specific size
 		// for a specific breakpoint.
 		//
-		@if output('grid-only-classes') {
+		@if output("grid-only-classes") {
 			@media #{$mq-only} {
 				&.#{$base-prefix-grid}#{$bp-name}-only-0#{$childClass} {
 					display: none;
@@ -185,7 +185,7 @@
 				}
 			}
 		}
-		@if output('grid-mq-#{$bp-name}') {
+		@if output("grid-mq-#{$bp-name}") {
 			@media #{$mq} {
 				//
 				// Sometimes you need a zero, which does the same as a hide for a breakpoint.
@@ -198,7 +198,7 @@
 				//
 				// Create columns with parts with breakpoints
 				//
-				@if output('grid-parts') {
+				@if output("grid-parts") {
 					@each $part, $percentage in $grid-parts {
 						%#{$bp-name}-#{$part}#{$childClass},
 						&.#{$base-prefix-grid}#{$bp-name}-#{$part}#{$childClass} {
@@ -216,7 +216,7 @@
 				//
 				// Create columns with amount of columns with breakpoints
 				//
-				@if output(('grid-columns', 'grid-counted-columns')) {
+				@if output(("grid-columns", "grid-counted-columns")) {
 					@for $a from 1 through $grid-columns {
 						$percentage: percentage($a/$grid-columns);
 
@@ -259,8 +259,8 @@
 @mixin grid(
 	$property,
 	$grid,
-	$min: setting('grid-min'),
-	$max: setting('grid-max')
+	$min: setting("grid-min"),
+	$max: setting("grid-max")
 ) {
 	#{$property}: grid($grid);
 	@if $max > 0 {
